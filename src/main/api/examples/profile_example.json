@@ -1,0 +1,20 @@
+{
+    "id": "bff1abaf-c367-4d9e-94ef-3a59188878cc",
+    "firstName": "Plum",
+    "lastName": "Bob",
+    "prefix": "Mr.",
+    "address": {
+        "addressId": "8463215",
+        "companyName": "MuleSoft",
+        "addressLine1": "buenos",
+        "addressLine2": "#400",
+        "city": "buanos aires",
+        "zipCode": "55151",
+        "state": "argentina",
+        "country": "argentina"
+    },
+    "phone": "52155654",
+    "email": "plumbob@gmail.com",
+    "currency": "USD",
+    "language": "en"
+}

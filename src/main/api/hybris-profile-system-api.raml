@@ -1,0 +1,28 @@
+#%RAML 1.0
+title: Hybris Profile System API
+version: v1.0
+
+/profile/{id}:
+  description: Retrieves the profile details of a customer
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: !include examples/profile_example.json
+      404:
+        body:
+          application/json:
+            
+  /orderHistory:
+    description: Retrieves the order history for a given profile id
+    get:
+      responses: 
+        200:
+          body:
+            application/json:
+              example: !include examples/order_history_example.json
+        404:
+          body: 
+            application/json:
+                    
