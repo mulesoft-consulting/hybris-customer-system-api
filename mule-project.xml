@@ -2,4 +2,5 @@
 <mule-project xmlns="http://www.mulesoft.com/tooling/project" runtimeId="org.mule.tooling.server.3.9.0.ee" schemaVersion="5.3.0.0">
     <name>hybris-profile-system-api</name>
     <description></description>
+    <muleExtension name="Hybris OCC Connector" qualifier="org.mule.tooling.ui.contribution.hybris.3.8.0"/>
 </mule-project>

@@ -10,5 +10,6 @@
 	<classpathentry kind="src" path="src/test/munit"/>
 	<classpathentry kind="src" path="src/main/api"/>
 	<classpathentry kind="src" path="src/main/wsdl"/>
+	<classpathentry kind="con" path="MULE_LIB/Hybris OCC Connector/org.mule.tooling.ui.contribution.hybris.3.8.0"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
