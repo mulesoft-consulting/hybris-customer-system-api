@@ -2,14 +2,22 @@
 title: Hybris Profile System API
 version: v1.0
 
-/profile/{id}:
+types:
+  HybrisProfile: !include DataTypes/HybrisProfile.raml
+  HybrisOrder: !include DataTypes/HybrisOrder.raml
+
+/profile/{hybrisId}:
   description: Retrieves the profile details of a customer
+  uriParameters: 
+    hybrisId: 
+      description: The profile ID in Hybris, stored as the user's email address.
+      type: string
   get:
     responses: 
       200:
         body: 
           application/json:
-            example: !include examples/profile_example.json
+            type: HybrisProfile
       404:
         body:
           application/json:
@@ -21,7 +29,7 @@ version: v1.0
         200:
           body:
             application/json:
-              example: !include examples/order_history_example.json
+              type:   HybrisOrder[]
         404:
           body: 
             application/json:
