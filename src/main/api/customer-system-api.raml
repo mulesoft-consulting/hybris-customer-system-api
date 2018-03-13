@@ -1,0 +1,72 @@
+#%RAML 1.0
+title: Customer System API
+version: v1.0
+mediaType: application/json
+
+resourceTypes: 
+  collection:
+    description: A collection of available <<resourcePathName>>
+    get:
+      headers: 
+        Accept:
+      responses: 
+        200:
+          headers: 
+            Content-Type:
+  single:
+    description: A <<resourcePathName>> from the system
+    get:
+      headers:
+        Accept:
+      responses: 
+        200:
+          headers: 
+            Content-Type:
+            
+types:
+  Customer: !include DataTypes/Customer.raml
+  Order: !include DataTypes/Order.raml
+
+traits:
+  pageable: !include Traits/pageable.raml
+  sortable: !include Traits/sortable.raml
+
+/customer/{id}:
+  description: Retrieves the profile details of a customer
+  is: [pageable]
+  uriParameters: 
+    id: 
+      description: The profile ID in Hybris, stored as the user's email address.
+      type: string
+  type: single
+  get:
+    responses: 
+      200:
+        body:
+          type: !include examples/customer_example.json
+          example: !include examples/customer_example.json
+
+  /orderHistory:
+    description: Retrieves the order history for a given profile id
+    is: [pageable, sortable]
+    type: collection
+    get:
+      body:
+        type: Order[]
+        example: !include examples/order_history_example.json
+
+/order/{orderId}:
+  description: Retrieves the order details from Hybris by Order Id.
+  uriParameters:
+    orderId: 
+      description: The Order Id in Hybris.
+      type: string
+  type: single
+  get:
+    responses: 
+      200:
+        body: 
+            type: Order
+            example: !include examples/order_example.json
+
+                    

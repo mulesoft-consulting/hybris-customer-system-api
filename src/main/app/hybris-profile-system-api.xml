@@ -57,9 +57,6 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
         </dw:transform-message>
         <logger message="#[payload]" level="INFO" doc:name="Logger" />
     </flow>
-    <flow name="get:/order/{orderId}:hybris-profile-system-api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
-    </flow>
     <apikit:mapping-exception-strategy name="hybris-profile-system-api-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />

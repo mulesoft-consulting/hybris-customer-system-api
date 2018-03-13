@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    <http:listener-config name="customer-system-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="customer-system-api-config" raml="customer-system-api.raml" consoleEnabled="false" doc:name="Router"/>
+    <flow name="customer-system-api-main">
+        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="customer-system-api-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="customer-system-api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+    <flow name="customer-system-api-console">
+        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="customer-system-api-config" doc:name="APIkit Console"/>
+    </flow>
+    <flow name="get:/customer/{id}:customer-system-api-config">
+        <set-payload value="{&#xA;    &quot;id&quot;: &quot;bff1abaf-c367-4d9e-94ef-3a59188878cc&quot;,&#xA;    &quot;firstName&quot;: &quot;Plum&quot;,&#xA;    &quot;lastName&quot;: &quot;Bob&quot;,&#xA;    &quot;prefix&quot;: &quot;Mr.&quot;,&#xA;    &quot;address&quot;: {&#xA;        &quot;addressId&quot;: &quot;8463215&quot;,&#xA;        &quot;companyName&quot;: &quot;MuleSoft&quot;,&#xA;        &quot;addressLine1&quot;: &quot;buenos&quot;,&#xA;        &quot;addressLine2&quot;: &quot;#400&quot;,&#xA;        &quot;city&quot;: &quot;buanos aires&quot;,&#xA;        &quot;zipCode&quot;: &quot;55151&quot;,&#xA;        &quot;state&quot;: &quot;argentina&quot;,&#xA;        &quot;country&quot;: &quot;argentina&quot;&#xA;    },&#xA;    &quot;phone&quot;: &quot;52155654&quot;,&#xA;    &quot;email&quot;: &quot;plumbob@gmail.com&quot;,&#xA;    &quot;currency&quot;: &quot;USD&quot;,&#xA;    &quot;language&quot;: &quot;en&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/order/{orderId}:customer-system-api-config">
+        <set-payload value="{&#xA;    &quot;id&quot;: 847326432,&#xA;    &quot;numberOfItems&quot;: 1,&#xA;    &quot;store&quot;: &quot;apparel-us&quot;,&#xA;    &quot;status&quot;: &quot;processing&quot;,&#xA;    &quot;statusDisplay&quot;: &quot;Processing&quot;,&#xA;    &quot;deliveryStatus&quot;: &quot;Pending&quot;,&#xA;    &quot;customer&quot;: {&#xA;        &quot;id&quot;: &quot;plumbob@gmail.com&quot;,&#xA;        &quot;fullName&quot;: &quot;Plum Bob&quot;&#xA;    },&#xA;    &quot;deliveryAddresss&quot;: {&#xA;        &quot;addressId&quot;: &quot;8463215&quot;,&#xA;        &quot;companyName&quot;: &quot;MuleSoft&quot;,&#xA;        &quot;addressLine1&quot;: &quot;buenos&quot;,&#xA;        &quot;addressLine2&quot;: &quot;#400&quot;,&#xA;        &quot;city&quot;: &quot;buanos aires&quot;,&#xA;        &quot;zipCode&quot;: &quot;55151&quot;,&#xA;        &quot;state&quot;: &quot;argentina&quot;,&#xA;        &quot;country&quot;: &quot;argentina&quot;&#xA;    },&#xA;    &quot;totalPriceWithTax&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$120.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 120.0&#xA;    },&#xA;    &quot;totalPrice&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$118.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 118.0&#xA;    },&#xA;    &quot;taxAmount&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$2.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 2.0&#xA;    },&#xA;    &quot;subTotal&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$0.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 0.0&#xA;    }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customer/{id}/orderHistory:application/json:customer-system-api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <apikit:mapping-exception-strategy name="customer-system-api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

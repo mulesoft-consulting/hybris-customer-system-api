@@ -1,0 +1,12 @@
+#%RAML 1.0 DataType
+
+properties: 
+    id?: string
+    firstName?: string
+    lastName?: string
+    prefix?: string
+    address?: !include Address.raml
+    phone?: string
+    email?: string
+    currency?: string
+    language?: string
