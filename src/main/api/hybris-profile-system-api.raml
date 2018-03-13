@@ -6,8 +6,13 @@ types:
   HybrisProfile: !include DataTypes/HybrisProfile.raml
   HybrisOrder: !include DataTypes/HybrisOrder.raml
 
+traits:
+  pageable: !include Traits/pageable.raml
+  sortable: !include Traits/sortable.raml
+
 /profile/{hybrisId}:
   description: Retrieves the profile details of a customer
+  is: [pageable]
   uriParameters: 
     hybrisId: 
       description: The profile ID in Hybris, stored as the user's email address.
@@ -21,9 +26,11 @@ types:
       404:
         body:
           application/json:
+    
             
   /orderHistory:
     description: Retrieves the order history for a given profile id
+    is: [pageable, sortable]
     get:
       responses: 
         200:
@@ -33,4 +40,21 @@ types:
         404:
           body: 
             application/json:
+
+/order/{orderId}:
+  description: Retrieves the order details from Hybris by Order Id.
+  uriParameters:
+    orderId: 
+      description: The Order Id in Hybris.
+      type: string
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: HybrisOrder
+      404:
+        body: 
+          application/json:
+
                     

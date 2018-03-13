@@ -19,17 +19,17 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
         <apikit:console config-ref="hybris-profile-system-api-config" doc:name="APIkit Console" />
     </flow>
     <flow name="get:/profile/{hybrisId}/orderHistory:hybris-profile-system-api-config">
-        <hybris:get-order-history config-ref="Hybris_OCC_Connector__Trusted_Client" userId="#[message.inboundProperties.'http.uri.params'.hybrisId]" doc:name="Hybris OCC Connector"/>
+        <hybris:get-order-history config-ref="Hybris_OCC_Connector__Trusted_Client" userId="#[message.inboundProperties.'http.uri.params'.hybrisId]" doc:name="Hybris OCC Connector" />
         <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 "orders": payload]]></dw:set-payload>
         </dw:transform-message>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger" />
     </flow>
     <flow name="get:/profile/{hybrisId}:hybris-profile-system-api-config">
-        <hybris:get-user config-ref="Hybris_OCC_Connector__Customer_or_Customer_Manager" userId="#[message.inboundProperties.'http.uri.params'.hybrisId]" doc:name="Hybris OCC Connector"/>
+        <hybris:get-user config-ref="Hybris_OCC_Connector__Customer_or_Customer_Manager" userId="#[message.inboundProperties.'http.uri.params'.hybrisId]" doc:name="Hybris OCC Connector" />
         <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -55,7 +55,10 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 	}	
 }]]></dw:set-payload>
         </dw:transform-message>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger" />
+    </flow>
+    <flow name="get:/order/{orderId}:hybris-profile-system-api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
     </flow>
     <apikit:mapping-exception-strategy name="hybris-profile-system-api-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
