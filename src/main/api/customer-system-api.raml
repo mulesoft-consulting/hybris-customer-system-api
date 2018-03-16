@@ -10,6 +10,7 @@ resourceTypes:
 types:
   Customer: !include DataTypes/Customer.raml
   Order: !include DataTypes/Order.raml
+  Orders: !include DataTypes/Orders.raml
 
 traits:
   pageable: !include Traits/pageable.raml
@@ -36,7 +37,7 @@ traits:
     type: collection
     get:
       body:
-        type: Order[]
+        type: Orders
         example: !include examples/order_history_example.json
 
 /order/{orderId}:
