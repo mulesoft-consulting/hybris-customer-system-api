@@ -1,11 +1,10 @@
 #%RAML 1.0 DataType
-
 properties: 
     id?: string
     firstName?: string
     lastName?: string
     prefix?: string
-    address?: !include Address.raml
+    address?: !include exchange_modules/de6ca85b-7dfb-44bc-abb4-388e2dfad3d0/address/1.0.0/address.raml
     phone?: string
     email?: string
     currency?: string

@@ -1,0 +1,1 @@
+{"main":"order.raml","name":"Order","classifier":"raml-fragment","tags":["type"],"dependencies":[{"groupId":"de6ca85b-7dfb-44bc-abb4-388e2dfad3d0","assetId":"customer","version":"1.0.0"}],"groupId":"de6ca85b-7dfb-44bc-abb4-388e2dfad3d0","assetId":"order","version":"1.0.5"}

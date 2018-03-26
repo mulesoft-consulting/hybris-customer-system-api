@@ -1,0 +1,1 @@
+{"main":"pageable-trait.raml","name":"Pageable Trait","classifier":"raml-fragment","tags":["trait"],"groupId":"com.mythical.retailer.corporateit.traits","assetId":"pageable-trait","version":"1.0.0","description":"Defines standard approach to paging results of a given resource"}

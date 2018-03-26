@@ -1,46 +1,25 @@
 {
-    "id": 847326432,
+    "id": "847326432",
     "numberOfItems": 1,
     "store": "apparel-us",
     "status": "processing",
     "statusDisplay": "Processing",
     "deliveryStatus": "Pending",
-    "customer": {
-        "id": "plumbob@gmail.com",
-        "fullName": "Plum Bob"
-    },
+    "currency": "USD",
+    "shippingCost": 8.00,
+    "lineAmount": 25.00,
+    "taxAmount": 1.50,
+    "subTotal": 0.00,
+    "totalPrice": 34.50,
+    "customerId": "bff1abaf-c367-4d9e-94ef-3a59188878cc",
+    "email":"max.mule@mulesoft.com",
     "deliveryAddresss": {
         "addressId": "8463215",
-        "companyName": "MuleSoft",
         "addressLine1": "buenos",
         "addressLine2": "#400",
         "city": "buanos aires",
-        "zipCode": "55151",
+        "postalCode": "55151",
         "state": "argentina",
         "country": "argentina"
-    },
-    "totalPriceWithTax": {
-        "currency": "USD",
-        "formattedamount": "$120.00",
-        "priceType": "BUY",
-        "amount": 120.0
-    },
-    "totalPrice": {
-        "currency": "USD",
-        "formattedamount": "$118.00",
-        "priceType": "BUY",
-        "amount": 118.0
-    },
-    "taxAmount": {
-        "currency": "USD",
-        "formattedamount": "$2.00",
-        "priceType": "BUY",
-        "amount": 2.0
-    },
-    "subTotal": {
-        "currency": "USD",
-        "formattedamount": "$0.00",
-        "priceType": "BUY",
-        "amount": 0.0
     }
 }

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:hybris="http://www.mulesoft.org/schema/mule/hybris" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:hybris="http://www.mulesoft.org/schema/mule/hybris" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 http://www.mulesoft.org/schema/mule/hybris http://www.mulesoft.org/schema/mule/hybris/current/mule-hybris.xsd
-http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
-    <http:listener-config name="customer-system-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <apikit:config name="customer-system-api-config" raml="customer-system-api.raml" consoleEnabled="false" doc:name="Router"/>
-    <hybris:customerManager name="Hybris_OCC_Connector__Customer_or_Customer_Manager" userName="${hybris.userName}" password="${hybris.password}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" doc:name="Hybris OCC Connector: Customer or Customer Manager"/>
-    <hybris:trustedClient name="Hybris_OCC_Connector__Trusted_Client" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" doc:name="Hybris OCC Connector: Trusted Client"/>
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+    <http:listener-config name="customer-system-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
+    <apikit:config name="customer-system-api-config" raml="customer-system-api.raml" consoleEnabled="false" doc:name="Router" />
+    <hybris:customerManager name="Hybris_OCC_Connector__Customer_or_Customer_Manager" userName="${hybris.userName}" password="${hybris.password}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" doc:name="Hybris OCC Connector: Customer or Customer Manager" />
+    <hybris:trustedClient name="Hybris_OCC_Connector__Trusted_Client" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" doc:name="Hybris OCC Connector: Trusted Client" />
     <flow name="customer-system-api-main">
-        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
-        <apikit:router config-ref="customer-system-api-config" doc:name="APIkit Router"/>
-        <exception-strategy ref="customer-system-api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/api/*" doc:name="HTTP" />
+        <apikit:router config-ref="customer-system-api-config" doc:name="APIkit Router" />
+        <exception-strategy ref="customer-system-api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy" />
     </flow>
     <flow name="customer-system-api-console">
-        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
-        <apikit:console config-ref="customer-system-api-config" doc:name="APIkit Console"/>
+        <http:listener config-ref="customer-system-api-httpListenerConfig" path="/console/*" doc:name="HTTP" />
+        <apikit:console config-ref="customer-system-api-config" doc:name="APIkit Console" />
     </flow>
     <flow name="get:/customer/{id}:customer-system-api-config">
         <hybris:get-user config-ref="Hybris_OCC_Connector__Customer_or_Customer_Manager" userId="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Hybris_Customer_Manager_Get_User"/>
-        <dw:transform-message doc:name="Transform Message" metadata:id="136e78ea-27eb-43a8-8b1f-33d5a1bd1963">
-            <dw:input-payload mimeType="application/json"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="3e934a5b-25e8-49b7-91e7-167f023b10e6">
+            <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
@@ -32,13 +36,12 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 	prefix: payload.title,
 	address: {
 		addressId: payload.defaultAddress.id,
-		companyName: payload.defaultAddress.companyName,
 		addressLine1: payload.defaultAddress.line1,
 		addressLine2: payload.defaultAddress.line2,
 		city: payload.defaultAddress.town,
 		zipCode: payload.defaultAddress.postalCode,
 		state: payload.defaultAddress.region.isocode,
-		country: payload.defaultAddress.country.name
+		country: payload.defaultAddress.country.isocode
 	},
 	phone: payload.defaultAddress.phone,
 	email: payload.uid,
@@ -46,46 +49,69 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 	language: payload.language.isocode
 }]]></dw:set-payload>
         </dw:transform-message>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger" />
     </flow>
     <flow name="get:/order/{orderId}:customer-system-api-config">
-        <set-payload value="{&#xA;    &quot;id&quot;: 847326432,&#xA;    &quot;numberOfItems&quot;: 1,&#xA;    &quot;store&quot;: &quot;apparel-us&quot;,&#xA;    &quot;status&quot;: &quot;processing&quot;,&#xA;    &quot;statusDisplay&quot;: &quot;Processing&quot;,&#xA;    &quot;deliveryStatus&quot;: &quot;Pending&quot;,&#xA;    &quot;customer&quot;: {&#xA;        &quot;id&quot;: &quot;plumbob@gmail.com&quot;,&#xA;        &quot;fullName&quot;: &quot;Plum Bob&quot;&#xA;    },&#xA;    &quot;deliveryAddresss&quot;: {&#xA;        &quot;addressId&quot;: &quot;8463215&quot;,&#xA;        &quot;companyName&quot;: &quot;MuleSoft&quot;,&#xA;        &quot;addressLine1&quot;: &quot;buenos&quot;,&#xA;        &quot;addressLine2&quot;: &quot;#400&quot;,&#xA;        &quot;city&quot;: &quot;buanos aires&quot;,&#xA;        &quot;zipCode&quot;: &quot;55151&quot;,&#xA;        &quot;state&quot;: &quot;argentina&quot;,&#xA;        &quot;country&quot;: &quot;argentina&quot;&#xA;    },&#xA;    &quot;totalPriceWithTax&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$120.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 120.0&#xA;    },&#xA;    &quot;totalPrice&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$118.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 118.0&#xA;    },&#xA;    &quot;taxAmount&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$2.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 2.0&#xA;    },&#xA;    &quot;subTotal&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$0.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 0.0&#xA;    }&#xA;}" doc:name="Set Payload"/>
+        <set-payload value="{&#xA;    &quot;id&quot;: 847326432,&#xA;    &quot;numberOfItems&quot;: 1,&#xA;    &quot;store&quot;: &quot;apparel-us&quot;,&#xA;    &quot;status&quot;: &quot;processing&quot;,&#xA;    &quot;statusDisplay&quot;: &quot;Processing&quot;,&#xA;    &quot;deliveryStatus&quot;: &quot;Pending&quot;,&#xA;    &quot;customer&quot;: {&#xA;        &quot;id&quot;: &quot;plumbob@gmail.com&quot;,&#xA;        &quot;fullName&quot;: &quot;Plum Bob&quot;&#xA;    },&#xA;    &quot;deliveryAddresss&quot;: {&#xA;        &quot;addressId&quot;: &quot;8463215&quot;,&#xA;        &quot;companyName&quot;: &quot;MuleSoft&quot;,&#xA;        &quot;addressLine1&quot;: &quot;buenos&quot;,&#xA;        &quot;addressLine2&quot;: &quot;#400&quot;,&#xA;        &quot;city&quot;: &quot;buanos aires&quot;,&#xA;        &quot;zipCode&quot;: &quot;55151&quot;,&#xA;        &quot;state&quot;: &quot;argentina&quot;,&#xA;        &quot;country&quot;: &quot;argentina&quot;&#xA;    },&#xA;    &quot;totalPriceWithTax&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$120.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 120.0&#xA;    },&#xA;    &quot;totalPrice&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$118.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 118.0&#xA;    },&#xA;    &quot;taxAmount&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$2.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 2.0&#xA;    },&#xA;    &quot;subTotal&quot;: {&#xA;        &quot;currency&quot;: &quot;USD&quot;,&#xA;        &quot;formattedamount&quot;: &quot;$0.00&quot;,&#xA;        &quot;priceType&quot;: &quot;BUY&quot;,&#xA;        &quot;amount&quot;: 0.0&#xA;    }&#xA;}" doc:name="Set Payload" />
     </flow>
-    <flow name="get:/customer/{id}/orderHistory:application/json:customer-system-api-config">
-        <hybris:get-order-history config-ref="Hybris_OCC_Connector__Trusted_Client" userId="#[message.inboundProperties.'http.uri.params'.hybrisId]" doc:name="Hybris_Trusted_Client_Order_History"/>
-        <dw:transform-message doc:name="Transform Message">
+    <flow name="get:/customer/{id}/orderHistory:customer-system-api-config">
+        <hybris:get-user config-ref="Hybris_OCC_Connector__Customer_or_Customer_Manager" userId="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Hybris_Customer_Manager_Get_User"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <set-variable variableName="profileData" value="#[payload]" doc:name="Variable"/>
+        <hybris:get-order-history config-ref="Hybris_OCC_Connector__Trusted_Client" userId="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Hybris_Trusted_Client"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="a2863977-0186-4e81-8edf-2577a801e44a">
+            <dw:input-payload mimeType="application/json"/>
+            <dw:input-variable mimeType="application/json" variableName="profileData"/>
             <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
+%output application/json
 ---
-payload]]></dw:set-payload>
+payload map ((payload01 , indexOfPayload01) -> {
+	id: payload01.code,
+	status: payload01.placed,
+	statusDisplay: payload01.statusDisplay,
+	currency: payload01.total.currencyIso,
+	totalPrice: payload01.total.value,
+	customerId: flowVars.profileData.uid,
+	email: flowVars.profileData.uid,
+	deliveryAddresss: {
+		addressId: flowVars.profileData.defaultAddress.id,
+		addressLine1: flowVars.profileData.defaultAddress.line1,
+		addressLine2: flowVars.profileData.defaultAddress.line2,
+		city: flowVars.profileData.defaultAddress.town,
+		postalCode: flowVars.profileData.defaultAddress.postalCode,
+		state: flowVars.profileData.defaultAddress.region.isocode,
+		country: flowVars.profileData.defaultAddress.country.isocode
+	}
+})]]></dw:set-payload>
         </dw:transform-message>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
     </flow>
     <apikit:mapping-exception-strategy name="customer-system-api-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload" />
         </apikit:mapping>
         <apikit:mapping statusCode="405">
             <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload" />
         </apikit:mapping>
         <apikit:mapping statusCode="415">
             <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload" />
         </apikit:mapping>
         <apikit:mapping statusCode="406">
             <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload" />
         </apikit:mapping>
         <apikit:mapping statusCode="400">
             <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
-            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload" />
         </apikit:mapping>
     </apikit:mapping-exception-strategy>
 </mule>

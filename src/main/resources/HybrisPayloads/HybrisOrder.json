@@ -1,0 +1,21 @@
+{	
+	"$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "The metadata received from Hybris Order.",
+    "type": "object",
+    "properties": {
+        "code": { "type": "string" },
+        "status": { "type": "string" },
+        "statusDisplay": { "type": "string" },
+        "placed": { "type": "string" },
+        "guid": { "type": "string" },
+        "total": { "properties": {
+                "currencyIso": { "type": "string" },
+                "value": { "type": "integer" },
+                "priceType": { "type": "string" },
+                "formattedValue": { "type": "string" },
+                "minQuantity": { "type": "number" },
+                "maxQuantity": { "type": "number" }            
+            }
+        }
+    }
+}
