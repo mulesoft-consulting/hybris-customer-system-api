@@ -41,19 +41,4 @@ traits:
           body:
             type: Order[]      
             example: !include examples/order_history_example.json
-
-/order/{orderId}:
-  description: Retrieves the order details from Hybris by Order Id.
-  uriParameters:
-    orderId: 
-      description: The Order Id in Hybris.
-      type: string
-  type: single
-  get:
-    responses: 
-      200:
-        body: 
-            type: Order
-            example: !include examples/order_example.json
-
                     

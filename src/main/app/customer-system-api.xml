@@ -51,11 +51,6 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
         </dw:transform-message>
         <logger message="#[payload]" level="INFO" doc:name="Logger" />
     </flow>
-    <flow name="get:/order/{orderId}:customer-system-api-config">
-        <hybris:get-order-by-code config-ref="Hybris_OCC_Connector__Trusted_Client" code=" #[message.inboundProperties.'http.uri.params'.orderId]" doc:name="Hybris OCC Connector"/>
-        <json:object-to-json-transformer doc:name="Object to JSON"/>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-    </flow>
     <flow name="get:/customer/{id}/orderHistory:customer-system-api-config">
         <hybris:get-user config-ref="Hybris_OCC_Connector__Customer_or_Customer_Manager" userId="#[message.inboundProperties.'http.uri.params'.id]" doc:name="Hybris_Customer_Manager_Get_User"/>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
