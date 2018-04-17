@@ -13,7 +13,7 @@
     "totalPrice": 34.50,
     "customerId": "bff1abaf-c367-4d9e-94ef-3a59188878cc",
     "email":"max.mule@mulesoft.com",
-    "deliveryAddresss": {
+    "deliveryAddress": {
         "addressId": "8463215",
         "addressLine1": "buenos",
         "addressLine2": "#400",

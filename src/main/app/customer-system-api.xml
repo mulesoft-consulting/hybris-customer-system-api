@@ -71,7 +71,7 @@ payload map ((payload01 , indexOfPayload01) -> {
 	totalPrice: payload01.total.value,
 	customerId: flowVars.profileData.uid,
 	email: flowVars.profileData.uid,
-	deliveryAddresss: {
+	deliveryAddress: {
 		addressId: flowVars.profileData.defaultAddress.id,
 		addressLine1: flowVars.profileData.defaultAddress.line1,
 		addressLine2: flowVars.profileData.defaultAddress.line2,
