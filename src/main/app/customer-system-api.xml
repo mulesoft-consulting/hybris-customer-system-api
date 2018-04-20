@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:hybris="http://www.mulesoft.org/schema/mule/hybris" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:hybris="http://www.mulesoft.org/schema/mule/hybris" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
@@ -7,11 +7,13 @@ http://www.mulesoft.org/schema/mule/hybris http://www.mulesoft.org/schema/mule/h
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
-http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd">
     <http:listener-config name="customer-system-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
     <apikit:config name="customer-system-api-config" raml="customer-system-api.raml" consoleEnabled="false" doc:name="Router" />
     <hybris:customerManager name="Hybris_OCC_Connector__Customer_or_Customer_Manager" userName="${hybris.userName}" password="${hybris.password}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" doc:name="Hybris OCC Connector: Customer or Customer Manager" />
     <hybris:trustedClient name="Hybris_OCC_Connector__Trusted_Client" clientId="${hybris.clientId}" clientSecret="${hybris.clientSecret}" address="${hybris.address}" tokenUrl="${hybris.tokenUrl}" doc:name="Hybris OCC Connector: Trusted Client" />
+    <api-platform-gw:api apiName="groupId:de6ca85b-7dfb-44bc-abb4-388e2dfad3d0:assetId:customer-system-api" version="v1.0:11719711" flowRef="customer-system-api-main" create="true" apikitRef="customer-system-api-config" doc:name="API Autodiscovery"/>
     <flow name="customer-system-api-main">
         <http:listener config-ref="customer-system-api-httpListenerConfig" path="/api/*" doc:name="HTTP" />
         <apikit:router config-ref="customer-system-api-config" doc:name="APIkit Router" />
